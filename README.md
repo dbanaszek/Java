@@ -3,6 +3,7 @@ Technologie utrwalania danych dla języka Java
 Dawid Banaszek
 
 Dziedzina projektu: Smartphone
+
 Projekt - zawartość
 1. CRUD
 2. Jedna tabela, 3-4 atrybuty (String, date, int, double)
