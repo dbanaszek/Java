@@ -12,7 +12,7 @@ import java.util.*;
 
 import com.example.jdbcdemo.domain.Person;
 
-public class PersonManagerJDBC implements PersonManager{
+public class DeviceManagerJDBC implements PersonManager{
 
 	private Connection connection;
 
@@ -26,7 +26,7 @@ public class PersonManagerJDBC implements PersonManager{
 
 	private Statement statement;
 
-	public PersonManagerJDBC() {
+	public DeviceManagerJDBC() {
 		try {
 			connection = DriverManager.getConnection(url);
 			statement = connection.createStatement();
@@ -60,7 +60,7 @@ public class PersonManagerJDBC implements PersonManager{
 		return connection;
 	}
 
-	void clearPersons() {
+	void clearDevices() {
 		try {
 			deleteAllDevicesStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -69,13 +69,13 @@ public class PersonManagerJDBC implements PersonManager{
 	}
 
 	@Override
-	public int addPerson(Person person) {
+	public int addDevice(Person person) {
 		int count = 0;
-		Calendar dateOfRelease = prepDate(person);
+
 		try {
 			addDeviceStmt.setString(1, person.getDeviceName());
 			addDeviceStmt.setDouble(2, person.getScreenSize());
-			addDeviceStmt.setDate(3, new java.sql.Date(dateOfRelease.getTimeInMillis()));
+			addDeviceStmt.setDate(3, new java.sql.Date(person.getDateOfRelease().getTimeInMillis()));
 
 			count = addDeviceStmt.executeUpdate();
 
@@ -86,7 +86,7 @@ public class PersonManagerJDBC implements PersonManager{
 	}
 
 	@Override
-	public List<Person> getAllPersons() {
+	public List<Person> getAllDevices() {
 		List<Person> persons = new ArrayList<Person>();
 
 		try {
@@ -94,10 +94,12 @@ public class PersonManagerJDBC implements PersonManager{
 
 			while (rs.next()) {
 				Person p = new Person();
+				Calendar c = new GregorianCalendar();
 				p.setId(rs.getInt("id"));
 				p.setDeviceName(rs.getString("deviceName"));
 				p.setScreenSize(rs.getDouble("screenSize"));
-				p.setDateOfRelease(rs.getDate("dateOfRelease").toString());
+				c.setTime(rs.getDate("dateOfRelease"));
+				p.setDateOfRelease(c);
 				persons.add(p);
 			}
 
@@ -106,16 +108,4 @@ public class PersonManagerJDBC implements PersonManager{
 		}
 		return persons;
 	}
-
-	private Calendar prepDate(Person person){
-
-		Calendar dateOfRelease = new GregorianCalendar();
-
-		dateOfRelease.set(Calendar.YEAR, person.getYearOfRelease());
-		dateOfRelease.set(Calendar.MONTH, person.getMonthOfRelease());
-		dateOfRelease.set(Calendar.DAY_OF_MONTH, person.getDayOfRelease());
-
-		return dateOfRelease;
-	}
-
 }

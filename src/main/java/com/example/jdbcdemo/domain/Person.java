@@ -1,25 +1,23 @@
 package com.example.jdbcdemo.domain;
 
+import java.util.Calendar;
+
 public class Person {
 	
 	private long id;
 	
 	private String deviceName;
 	private double screenSize;
-	private int yearOfRelease;
-	private int dayOfRelease;
-	private int monthOfRelease;
+	private Calendar dateOfRelease;
 	
 	public Person() {
 	}
 	
-	public Person(String deviceName, double screenSize, int yearOfRelease, int monthOfRelease, int dayOfRelease) {
+	public Person(String deviceName, double screenSize, Calendar dateOfRelease) {
 		super();
 		this.deviceName = deviceName;
 		this.screenSize = screenSize;
-		this.yearOfRelease = yearOfRelease;
-		this.monthOfRelease = monthOfRelease;
-		this.dayOfRelease = dayOfRelease;
+		this.dateOfRelease = dateOfRelease;
 	}
 
 	public long getId() {
@@ -43,27 +41,12 @@ public class Person {
 		this.screenSize = screenSize;
 	}
 
-	public int getYearOfRelease() {
-		return yearOfRelease;
+
+	public Calendar getDateOfRelease() {
+		return dateOfRelease;
 	}
 
-	public void setYearOfRelease(int yearOfRelease) {
-		this.yearOfRelease = yearOfRelease;
-	}
-
-	public int getDayOfRelease() {
-		return dayOfRelease;
-	}
-
-	public void setDayOfRelease(int dayOfRelease) {
-		this.dayOfRelease = dayOfRelease;
-	}
-
-	public int getMonthOfRelease() {
-		return monthOfRelease;
-	}
-
-	public void setMonthOfRelease(int monthOfRelease) {
-		this.monthOfRelease = monthOfRelease;
+	public void setDateOfRelease(Calendar dateOfRelease) {
+		this.dateOfRelease = dateOfRelease;
 	}
 }
