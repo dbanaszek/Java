@@ -5,19 +5,21 @@ public class Person {
 	private long id;
 	
 	private String deviceName;
-	private String dateOfRelease;
 	private double screenSize;
-	private int yob;
+	private int yearOfRelease;
+	private int dayOfRelease;
+	private int monthOfRelease;
 	
 	public Person() {
 	}
 	
-	public Person(String deviceName, String dateOfRelease, double screenSize, int yob) {
+	public Person(String deviceName, double screenSize, int yearOfRelease, int monthOfRelease, int dayOfRelease) {
 		super();
 		this.deviceName = deviceName;
-		this.dateOfRelease = dateOfRelease;
 		this.screenSize = screenSize;
-		this.yob = yob;
+		this.yearOfRelease = yearOfRelease;
+		this.monthOfRelease = monthOfRelease;
+		this.dayOfRelease = dayOfRelease;
 	}
 
 	public long getId() {
@@ -33,15 +35,6 @@ public class Person {
 	public void setDeviceName(String deviceName) {
 		this.deviceName = deviceName;
 	}
-
-	public String getDateOfRelease() {
-		return dateOfRelease;
-	}
-
-	public void setDateOfRelease(String dateOfRelease) {
-		this.dateOfRelease = dateOfRelease;
-	}
-
 	public double getScreenSize() {
 		return screenSize;
 	}
@@ -49,11 +42,28 @@ public class Person {
 	public void setScreenSize(double screenSize) {
 		this.screenSize = screenSize;
 	}
-	public int getYob() {
-		return yob;
+
+	public int getYearOfRelease() {
+		return yearOfRelease;
 	}
-	public void setYob(int yob) {
-		this.yob = yob;
+
+	public void setYearOfRelease(int yearOfRelease) {
+		this.yearOfRelease = yearOfRelease;
 	}
-	
+
+	public int getDayOfRelease() {
+		return dayOfRelease;
+	}
+
+	public void setDayOfRelease(int dayOfRelease) {
+		this.dayOfRelease = dayOfRelease;
+	}
+
+	public int getMonthOfRelease() {
+		return monthOfRelease;
+	}
+
+	public void setMonthOfRelease(int monthOfRelease) {
+		this.monthOfRelease = monthOfRelease;
+	}
 }

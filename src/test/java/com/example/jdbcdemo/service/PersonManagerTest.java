@@ -13,8 +13,11 @@ public class PersonManagerTest {
 	
 	PersonManagerJDBC personManager = new PersonManagerJDBC();
 	
-	private final static String NAME_1 = "Zenek";
-	private final static int YOB_1 = 1945;
+	private final static String DEVICENAME_1 = "Moto X gen.2";
+	private final static int 	YEAROFRELEASE_1 = 2014;
+	private final static int    MONTHOFRELEASE_1 = 9;
+	private final static int 	DAYOFRELEASE_1 = 5;
+	private final static double SCREENSIZE_1 = 5.2;
 	
 	@Test
 	public void checkConnection(){
@@ -24,7 +27,7 @@ public class PersonManagerTest {
 	@Test
 	public void checkAdding(){
 		
-		Person person = new Person(NAME_1, YOB_1);
+		Person person = new Person(DEVICENAME_1, SCREENSIZE_1, YEAROFRELEASE_1, MONTHOFRELEASE_1, DAYOFRELEASE_1);
 		
 		personManager.clearPersons();
 		assertEquals(1,personManager.addPerson(person));
@@ -32,8 +35,8 @@ public class PersonManagerTest {
 		List<Person> persons = personManager.getAllPersons();
 		Person personRetrieved = persons.get(0);
 		
-		assertEquals(NAME_1, personRetrieved.getDeviceName());
-		assertEquals(YOB_1, personRetrieved.getYob());
+		assertEquals(DEVICENAME_1, personRetrieved.getDeviceName());
+//		assertEquals(YOB_1, personRetrieved.getYob());
 		
 	}
 
