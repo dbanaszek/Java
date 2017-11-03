@@ -32,7 +32,7 @@ public class PersonManagerTest {
 		List<Person> persons = personManager.getAllPersons();
 		Person personRetrieved = persons.get(0);
 		
-		assertEquals(NAME_1, personRetrieved.getName());
+		assertEquals(NAME_1, personRetrieved.getDeviceName());
 		assertEquals(YOB_1, personRetrieved.getYob());
 		
 	}

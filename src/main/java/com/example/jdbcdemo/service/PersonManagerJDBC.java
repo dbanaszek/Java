@@ -71,7 +71,7 @@ public class PersonManagerJDBC implements PersonManager{
 	public int addPerson(Person person) {
 		int count = 0;
 		try {
-			addPersonStmt.setString(1, person.getName());
+			addPersonStmt.setString(1, person.getDeviceName());
 			addPersonStmt.setInt(2, person.getYob());
 
 			count = addPersonStmt.executeUpdate();
@@ -92,7 +92,7 @@ public class PersonManagerJDBC implements PersonManager{
 			while (rs.next()) {
 				Person p = new Person();
 				p.setId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
+				p.setDeviceName(rs.getString("name"));
 				p.setYob(rs.getInt("yob"));
 				persons.add(p);
 			}
