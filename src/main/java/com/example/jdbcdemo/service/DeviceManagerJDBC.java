@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.example.jdbcdemo.domain.Person;
@@ -23,6 +21,7 @@ public class DeviceManagerJDBC implements PersonManager{
 	private PreparedStatement addDeviceStmt;
 	private PreparedStatement deleteAllDevicesStmt;
 	private PreparedStatement getAllDevicesStmt;
+	private PreparedStatement deleteDeviceByName;
 
 	private Statement statement;
 
@@ -50,6 +49,8 @@ public class DeviceManagerJDBC implements PersonManager{
 					.prepareStatement("DELETE FROM Device");
 			getAllDevicesStmt = connection
 					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device");
+			deleteDeviceByName = connection
+					.prepareStatement("DELETE FROM Device WHERE deviceName = ?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,5 +108,18 @@ public class DeviceManagerJDBC implements PersonManager{
 			e.printStackTrace();
 		}
 		return persons;
+	}
+
+	@Override
+	public int removeDevicesByName(Person person){
+		int count = 0;
+
+		try {
+			deleteDeviceByName.setString(1, person.getDeviceName());
+			count++;
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return count;
 	}
 }

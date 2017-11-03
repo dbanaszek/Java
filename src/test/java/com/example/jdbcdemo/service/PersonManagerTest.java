@@ -25,19 +25,25 @@ public class PersonManagerTest {
 	}
 	
 	@Test
-	public void checkAdding(){
-		
+	public void checkAdding() {
+
 		Person person = new Person(DEVICENAME_1, SCREENSIZE_1, DATEOFRELEASE_1);
-		
+
 		personManager.clearDevices();
-		assertEquals(1,personManager.addDevice(person));
-		
+		assertEquals(1, personManager.addDevice(person));
+
 		List<Person> persons = personManager.getAllDevices();
 		Person personRetrieved = persons.get(0);
-		
+
 		assertEquals(DEVICENAME_1, personRetrieved.getDeviceName());
-//		assertEquals(YOB_1, personRetrieved.getYob());
-		
+		assertEquals(SCREENSIZE_1, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_1, personRetrieved.getDateOfRelease());
+	}
+	@Test
+	public  void checkDeleting(){
+		Person person = new Person(DEVICENAME_1, SCREENSIZE_1, DATEOFRELEASE_1);
+
+		assertEquals(1, personManager.removeDevicesByName(person));
 	}
 
 }
