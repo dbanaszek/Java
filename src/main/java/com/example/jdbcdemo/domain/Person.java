@@ -26,7 +26,6 @@ public class Person {
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	public String getDeviceName() {
 		return deviceName;
 	}
@@ -36,16 +35,12 @@ public class Person {
 	public double getScreenSize() {
 		return screenSize;
 	}
-
 	public void setScreenSize(double screenSize) {
 		this.screenSize = screenSize;
 	}
-
-
 	public Calendar getDateOfRelease() {
 		return dateOfRelease;
 	}
-
 	public void setDateOfRelease(Calendar dateOfRelease) {
 		this.dateOfRelease = dateOfRelease;
 	}

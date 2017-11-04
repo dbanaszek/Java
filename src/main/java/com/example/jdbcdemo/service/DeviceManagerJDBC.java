@@ -21,7 +21,7 @@ public class DeviceManagerJDBC implements PersonManager{
 	private PreparedStatement addDeviceStmt;
 	private PreparedStatement deleteAllDevicesStmt;
 	private PreparedStatement getAllDevicesStmt;
-	private PreparedStatement deleteDeviceByName;
+	private PreparedStatement deleteDeviceByNameStmt;
 
 	private Statement statement;
 
@@ -49,7 +49,7 @@ public class DeviceManagerJDBC implements PersonManager{
 					.prepareStatement("DELETE FROM Device");
 			getAllDevicesStmt = connection
 					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device");
-			deleteDeviceByName = connection
+			deleteDeviceByNameStmt = connection
 					.prepareStatement("DELETE FROM Device WHERE deviceName = ?");
 
 		} catch (SQLException e) {
@@ -115,8 +115,8 @@ public class DeviceManagerJDBC implements PersonManager{
 		int count = 0;
 
 		try {
-			deleteDeviceByName.setString(1, person.getDeviceName());
-			count++;
+			deleteDeviceByNameStmt.setString(1, person.getDeviceName());
+			count = deleteDeviceByNameStmt.executeUpdate();
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
