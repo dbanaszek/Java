@@ -22,6 +22,7 @@ public class DeviceManagerJDBC implements PersonManager{
 	private PreparedStatement deleteAllDevicesStmt;
 	private PreparedStatement getAllDevicesStmt;
 	private PreparedStatement deleteDeviceByNameStmt;
+	private PreparedStatement findDeviceByNameStmt;
 
 	private Statement statement;
 
@@ -51,6 +52,8 @@ public class DeviceManagerJDBC implements PersonManager{
 					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device");
 			deleteDeviceByNameStmt = connection
 					.prepareStatement("DELETE FROM Device WHERE deviceName = ?");
+			findDeviceByNameStmt = connection
+					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device WHERE deviceName = ?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,16 +96,7 @@ public class DeviceManagerJDBC implements PersonManager{
 		try {
 			ResultSet rs = getAllDevicesStmt.executeQuery();
 
-			while (rs.next()) {
-				Person p = new Person();
-				Calendar c = new GregorianCalendar();
-				p.setId(rs.getInt("id"));
-				p.setDeviceName(rs.getString("deviceName"));
-				p.setScreenSize(rs.getDouble("screenSize"));
-				c.setTime(rs.getDate("dateOfRelease"));
-				p.setDateOfRelease(c);
-				persons.add(p);
-			}
+			persons = getFromResultSet(rs);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -121,5 +115,42 @@ public class DeviceManagerJDBC implements PersonManager{
 			e.printStackTrace();
 		}
 		return count;
+	}
+	@Override
+	public List<Person> findDevicesByName(Person person){
+		List<Person> persons = new ArrayList<>();
+
+		try{
+			findDeviceByNameStmt.setString(1, person.getDeviceName());
+			ResultSet rs = findDeviceByNameStmt.executeQuery();
+
+			persons = getFromResultSet(rs);
+
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return persons;
+	}
+
+	List<Person> getFromResultSet (ResultSet rs){
+		List<Person> persons = new ArrayList<>();
+
+		try {
+
+			while (rs.next()) {
+				Person p = new Person();
+				Calendar c = new GregorianCalendar();
+				p.setId(rs.getInt("id"));
+				p.setDeviceName(rs.getString("deviceName"));
+				p.setScreenSize(rs.getDouble("screenSize"));
+				c.setTime(rs.getDate("dateOfRelease"));
+				p.setDateOfRelease(c);
+				persons.add(p);
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+
+		return persons;
 	}
 }

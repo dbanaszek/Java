@@ -65,4 +65,16 @@ public class PersonManagerTest {
 		assertEquals(1, personManager.removeDevicesByName(personThree));
 	}
 
+	@Test
+	public void checkFindByName(){
+		Person personTwo = new Person(DEVICENAME_2, SCREENSIZE_2, DATEOFRELEASE_2);
+
+		List<Person> persons = personManager.findDevicesByName(personTwo);
+		Person personRetrieved = persons.get(0);
+
+		assertEquals(DEVICENAME_2, personRetrieved.getDeviceName());
+		assertEquals(SCREENSIZE_2, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_2, personRetrieved.getDateOfRelease());
+	}
+
 }
