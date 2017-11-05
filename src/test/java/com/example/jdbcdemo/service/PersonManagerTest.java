@@ -19,13 +19,19 @@ public class PersonManagerTest {
 	private final static double SCREENSIZE_1 = 5.2;
 	private final static Calendar DATEOFRELEASE_1 = new GregorianCalendar(2014, 9,5);
 
-	private final static String DEVICENAME_2 = "Samsung Galaxy S5";
+	private final static String DEVICENAME_2 = "Galaxy S5";
 	private final static double SCREENSIZE_2 = 5.1;
 	private final static Calendar DATEOFRELEASE_2 = new GregorianCalendar(2014, 4,11);
 
-	private final static String DEVICENAME_3 = "LG G2";
+	private final static String DEVICENAME_3 =  "G2";
 	private final static double SCREENSIZE_3 = 5.2;
 	private final static Calendar DATEOFRELEASE_3 = new GregorianCalendar(2013, 9,13);
+
+	private final static String DEVICENAME_4 = "Iphone 7";
+	private final static double SCREENSIZE_4 = 4.7;
+	private final static Calendar DATEOFRELEASE_4 = new GregorianCalendar(2016, 9,7);
+
+
 	
 	@Test
 	public void checkConnection(){
@@ -37,10 +43,12 @@ public class PersonManagerTest {
 
 		Person person = new Person(DEVICENAME_1, SCREENSIZE_1, DATEOFRELEASE_1);
 		Person personTwo = new Person(DEVICENAME_2, SCREENSIZE_2, DATEOFRELEASE_2);
+		Person personThree = new Person(DEVICENAME_3, SCREENSIZE_3, DATEOFRELEASE_3);
 
 		personManager.clearDevices();
 		assertEquals(1, personManager.addDevice(person));
 		assertEquals(1, personManager.addDevice((personTwo)));
+		assertEquals(1, personManager.addDevice(personThree));
 
 		List<Person> persons = personManager.getAllDevices();
 		Person personRetrieved = persons.get(0);
@@ -56,14 +64,7 @@ public class PersonManagerTest {
 		assertEquals(DATEOFRELEASE_2, personRetrieved.getDateOfRelease());
 
 	}
-	@Test
-	public  void checkDeleting(){
 
-		Person personThree = new Person(DEVICENAME_3, SCREENSIZE_3, DATEOFRELEASE_3);
-
-		assertEquals(1, personManager.addDevice(personThree));
-		assertEquals(1, personManager.removeDevicesByName(personThree));
-	}
 
 	@Test
 	public void checkFindByName(){
@@ -76,5 +77,36 @@ public class PersonManagerTest {
 		assertEquals(SCREENSIZE_2, personRetrieved.getScreenSize(), 0.00001);
 		assertEquals(DATEOFRELEASE_2, personRetrieved.getDateOfRelease());
 	}
+
+	@Test
+	public void checkFindByScreenSize(){
+		Person personThree = new Person(DEVICENAME_3, SCREENSIZE_3, DATEOFRELEASE_3);
+
+		//assertEquals(1, personManager.addDevice(personThree));
+
+		List<Person> persons = personManager.findDevicesByScreenSize(personThree);
+		Person personRetrieved = persons.get(0);
+
+		assertEquals(DEVICENAME_1, personRetrieved.getDeviceName());
+		assertEquals(SCREENSIZE_1, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_1, personRetrieved.getDateOfRelease());
+
+		personRetrieved = persons.get(1);
+
+		assertEquals(DEVICENAME_3, personRetrieved.getDeviceName());
+		assertEquals(SCREENSIZE_3, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_3, personRetrieved.getDateOfRelease());
+
+	}
+
+	@Test
+	public  void checkDeleting(){
+
+		Person personFour = new Person(DEVICENAME_4, SCREENSIZE_4, DATEOFRELEASE_4);
+
+		assertEquals(1, personManager.addDevice(personFour));
+		assertEquals(1, personManager.removeDevicesByName(personFour));
+	}
+
 
 }

@@ -23,6 +23,7 @@ public class DeviceManagerJDBC implements PersonManager{
 	private PreparedStatement getAllDevicesStmt;
 	private PreparedStatement deleteDeviceByNameStmt;
 	private PreparedStatement findDeviceByNameStmt;
+	private PreparedStatement findDeviceByScreenSizeStmt;
 
 	private Statement statement;
 
@@ -54,6 +55,8 @@ public class DeviceManagerJDBC implements PersonManager{
 					.prepareStatement("DELETE FROM Device WHERE deviceName = ?");
 			findDeviceByNameStmt = connection
 					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device WHERE deviceName = ?");
+			findDeviceByScreenSizeStmt = connection
+					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device WHERE ScreenSize = ?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,15 +119,30 @@ public class DeviceManagerJDBC implements PersonManager{
 		}
 		return count;
 	}
+
 	@Override
 	public List<Person> findDevicesByName(Person person){
 		List<Person> persons = new ArrayList<>();
 
 		try{
 			findDeviceByNameStmt.setString(1, person.getDeviceName());
-			ResultSet rs = findDeviceByNameStmt.executeQuery();
+			//ResultSet rs = findDeviceByNameStmt.executeQuery();
 
-			persons = getFromResultSet(rs);
+			persons = getFromResultSet(findDeviceByNameStmt.executeQuery());
+
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return persons;
+	}
+
+	@Override
+	public  List<Person> findDevicesByScreenSize(Person person){
+		List<Person> persons = new ArrayList<>();
+
+		try{
+			findDeviceByScreenSizeStmt.setDouble(1, person.getScreenSize());
+			persons = getFromResultSet(findDeviceByScreenSizeStmt.executeQuery());
 
 		}catch (SQLException e){
 			e.printStackTrace();

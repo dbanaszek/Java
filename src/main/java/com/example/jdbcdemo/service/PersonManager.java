@@ -10,7 +10,7 @@ public interface PersonManager {
 	public List<Person> getAllDevices();
 	public int removeDevicesByName(Person person);
 	public List<Person> findDevicesByName(Person person);
-//	public List<Person> findDevicesByScreenSize(Person person);															//TODO: For later implementation
+	public List<Person> findDevicesByScreenSize(Person person);															//TODO: For later implementation
 //  public List<Person> removeDevices(Person person)
 // 	public void removeDevice(Person person);
 //	public int updateDevice(Person person);
