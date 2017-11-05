@@ -90,8 +90,6 @@ public class PersonManagerTest {
 	public void checkFindByScreenSize(){
 		Person personThree = new Person(DEVICENAME_3, SCREENSIZE_3, DATEOFRELEASE_3);
 
-		//assertEquals(1, personManager.addDevice(personThree));
-
 		List<Person> persons = personManager.findDevicesByScreenSize(personThree);
 		Person personRetrieved = persons.get(0);
 
@@ -104,7 +102,17 @@ public class PersonManagerTest {
 		assertEquals(DEVICENAME_3, personRetrieved.getDeviceName());
 		assertEquals(SCREENSIZE_3, personRetrieved.getScreenSize(), 0.00001);
 		assertEquals(DATEOFRELEASE_3, personRetrieved.getDateOfRelease());
+	}
+	@Test
+	public void checkFindByDate(){
+		Person personTwo = new Person(DEVICENAME_2, SCREENSIZE_2, DATEOFRELEASE_2);
 
+		List<Person> persons = personManager.findDevicesByDate(personTwo);
+		Person personRetrieved = persons.get(0);
+
+		assertEquals(DEVICENAME_2, personRetrieved.getDeviceName());
+		assertEquals(SCREENSIZE_2, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_2, personRetrieved.getDateOfRelease());
 	}
 
 	@Test
@@ -125,5 +133,5 @@ public class PersonManagerTest {
 		assertEquals(1, personManager.updateDevice(personFive, personSix));
 
 	}
-	
+
 }
