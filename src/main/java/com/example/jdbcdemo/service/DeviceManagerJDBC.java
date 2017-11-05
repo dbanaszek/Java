@@ -24,6 +24,7 @@ public class DeviceManagerJDBC implements PersonManager{
 	private PreparedStatement deleteDeviceByNameStmt;
 	private PreparedStatement findDeviceByNameStmt;
 	private PreparedStatement findDeviceByScreenSizeStmt;
+	private PreparedStatement updateDeviceByNameStmt;
 
 	private Statement statement;
 
@@ -57,6 +58,8 @@ public class DeviceManagerJDBC implements PersonManager{
 					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device WHERE deviceName = ?");
 			findDeviceByScreenSizeStmt = connection
 					.prepareStatement("SELECT id, deviceName, screenSize, dateOfRelease FROM Device WHERE ScreenSize = ?");
+			updateDeviceByNameStmt = connection
+					.prepareStatement("UPDATE Device SET deviceName = ?, screenSize = ?, dateOfRelease = ? WHERE deviceName = ?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -148,6 +151,23 @@ public class DeviceManagerJDBC implements PersonManager{
 			e.printStackTrace();
 		}
 		return persons;
+	}
+	@Override
+	public int updateDevice(Person person, Person newPerson){
+		int count = 0;
+
+		try{
+			updateDeviceByNameStmt.setString(1, newPerson.getDeviceName());
+			updateDeviceByNameStmt.setDouble(2, newPerson.getScreenSize());
+			updateDeviceByNameStmt.setDate(3, new java.sql.Date(newPerson.getDateOfRelease().getTimeInMillis()));
+			updateDeviceByNameStmt.setString(4, person.getDeviceName());
+
+			count = updateDeviceByNameStmt.executeUpdate();
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+
+		return count;
 	}
 
 	List<Person> getFromResultSet (ResultSet rs){

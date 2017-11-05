@@ -13,7 +13,7 @@ public interface PersonManager {
 	public List<Person> findDevicesByScreenSize(Person person);															//TODO: For later implementation
 //  public List<Person> removeDevices(Person person)
 // 	public void removeDevice(Person person);
-//	public int updateDevice(Person person);
+	public int updateDevice(Person person, Person newPerson);
 
 
 }

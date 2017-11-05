@@ -31,6 +31,14 @@ public class PersonManagerTest {
 	private final static double SCREENSIZE_4 = 4.7;
 	private final static Calendar DATEOFRELEASE_4 = new GregorianCalendar(2016, 9,7);
 
+	private final static String DEVICENAME_5 = "G3";
+	private final static double SCREENSIZE_5 = 5.5;
+	private final static Calendar DATEOFRELEASE_5 = new GregorianCalendar(2014, 5,27);
+
+	private final static String DEVICENAME_6 = "G4";
+	private final static double SCREENSIZE_6 = 5.5;
+	private final static Calendar DATEOFRELEASE_6 = new GregorianCalendar(2015, 4,28);
+
 
 	
 	@Test
@@ -47,7 +55,7 @@ public class PersonManagerTest {
 
 		personManager.clearDevices();
 		assertEquals(1, personManager.addDevice(person));
-		assertEquals(1, personManager.addDevice((personTwo)));
+		assertEquals(1, personManager.addDevice(personTwo));
 		assertEquals(1, personManager.addDevice(personThree));
 
 		List<Person> persons = personManager.getAllDevices();
@@ -100,7 +108,7 @@ public class PersonManagerTest {
 	}
 
 	@Test
-	public  void checkDeleting(){
+	public void checkDeleting(){
 
 		Person personFour = new Person(DEVICENAME_4, SCREENSIZE_4, DATEOFRELEASE_4);
 
@@ -108,5 +116,14 @@ public class PersonManagerTest {
 		assertEquals(1, personManager.removeDevicesByName(personFour));
 	}
 
+	@Test
+	public void checkUpdating(){
+		Person personFive = new Person(DEVICENAME_5, SCREENSIZE_5, DATEOFRELEASE_5);
+		Person personSix = new Person(DEVICENAME_6, SCREENSIZE_6, DATEOFRELEASE_6);
 
+		assertEquals(1, personManager.addDevice(personFive));
+		assertEquals(1, personManager.updateDevice(personFive, personSix));
+
+	}
+	
 }
