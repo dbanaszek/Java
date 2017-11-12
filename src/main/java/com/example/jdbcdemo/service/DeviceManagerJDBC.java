@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
 import java.util.*;
 
 import com.example.jdbcdemo.domain.Person;
@@ -90,7 +91,7 @@ public class DeviceManagerJDBC implements PersonManager{
 		try {
 			addDeviceStmt.setString(1, person.getDeviceName());
 			addDeviceStmt.setDouble(2, person.getScreenSize());
-			addDeviceStmt.setDate(3, new java.sql.Date(person.getDateOfRelease().getTimeInMillis()));
+			addDeviceStmt.setDate(3, new Date(person.getDateOfRelease().getTimeInMillis()));
 
 			count = addDeviceStmt.executeUpdate();
 
@@ -149,7 +150,7 @@ public class DeviceManagerJDBC implements PersonManager{
 		List<Person> persons = new ArrayList<>();
 
 		try{
-			findDeviceByDate.setDate(1, new java.sql.Date(person.getDateOfRelease().getTimeInMillis()));
+			findDeviceByDate.setDate(1, new Date(person.getDateOfRelease().getTimeInMillis()));
 			persons = getFromResultSet(findDeviceByDate.executeQuery());
 
 		}catch (SQLException e){
@@ -165,7 +166,7 @@ public class DeviceManagerJDBC implements PersonManager{
 		try{
 			updateDeviceByNameStmt.setString(1, newPerson.getDeviceName());
 			updateDeviceByNameStmt.setDouble(2, newPerson.getScreenSize());
-			updateDeviceByNameStmt.setDate(3, new java.sql.Date(newPerson.getDateOfRelease().getTimeInMillis()));
+			updateDeviceByNameStmt.setDate(3, new Date(newPerson.getDateOfRelease().getTimeInMillis()));
 			updateDeviceByNameStmt.setString(4, person.getDeviceName());
 
 			count = updateDeviceByNameStmt.executeUpdate();
