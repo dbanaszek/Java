@@ -132,6 +132,16 @@ public class PersonManagerTest {
 		assertEquals(1, personManager.addDevice(personFive));
 		assertEquals(1, personManager.updateDevice(personFive, personSix));
 
+		List<Person> persons = personManager.findDevicesByDate(personSix);
+		Person personRetrieved = persons.get(0);
+
+		assertEquals(DEVICENAME_6, personRetrieved.getDeviceName());
+		assertEquals(SCREENSIZE_6, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_6, personRetrieved.getDateOfRelease());
+
+
+		assertEquals(1, personManager.removeDevicesByName(personSix));
+
 	}
 
 }
