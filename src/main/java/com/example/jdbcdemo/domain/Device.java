@@ -5,7 +5,6 @@ import java.util.Calendar;
 public class Device {
 	
 	private long id;
-	
 	private String deviceName;
 	private double screenSize;
 	private Calendar dateOfRelease;
