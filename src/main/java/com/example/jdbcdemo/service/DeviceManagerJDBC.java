@@ -184,6 +184,7 @@ public class DeviceManagerJDBC implements PersonManager{
 		try {
 			deleteDeviceByNameStmt.setString(1, person.getDeviceName());
 			count = deleteDeviceByNameStmt.executeUpdate();
+
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
@@ -199,8 +200,8 @@ public class DeviceManagerJDBC implements PersonManager{
 				addDeviceStmt.setDouble(2, person.getScreenSize());
 				addDeviceStmt.setDate(3, new Date(person.getDateOfRelease().getTimeInMillis()));
 				addDeviceStmt.executeUpdate();
-				}
-				connection.commit();
+			}
+			connection.commit();
 						
 			} catch (SQLException exception) {
 						
@@ -211,6 +212,62 @@ public class DeviceManagerJDBC implements PersonManager{
 						//!!!! ALARM
 					}
 			}
+	}
+
+	@Override
+	public void updateDevices(List<Person> persons, List<Person> newPersons){
+		try{
+			int i = -1;
+
+			connection.setAutoCommit(false);
+
+			if(persons.size() != newPersons.size()){
+				throw new SQLException();
+			}
+
+			for(Person person : newPersons){
+				updateDeviceByNameStmt.setString(1, person.getDeviceName());
+				updateDeviceByNameStmt.setDouble(2, person.getScreenSize());
+				updateDeviceByNameStmt.setDate(3, new Date(person.getDateOfRelease().getTimeInMillis()));
+				updateDeviceByNameStmt.setString(4, persons.get(++i).getDeviceName());
+				updateDeviceByNameStmt.executeUpdate();
+			}
+			connection.commit();
+
+		}catch (SQLException exception){
+
+			try{
+				connection.rollback();
+			}catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public int deleteDevices(List<Person> persons){
+
+		int count = 0;
+		try{
+
+			connection.setAutoCommit(false);
+
+			for(Person person : persons){
+				deleteDeviceByNameStmt.setString(1, person.getDeviceName());
+				count += deleteDeviceByNameStmt.executeUpdate();
+
+			}
+			connection.commit();
+
+		}catch (SQLException exception){
+
+			try{
+				connection.rollback();
+			}catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return count;
 	}
 
 	private List<Person> getFromResultSet (ResultSet rs){
@@ -234,4 +291,5 @@ public class DeviceManagerJDBC implements PersonManager{
 
 		return persons;
 	}
+
 }

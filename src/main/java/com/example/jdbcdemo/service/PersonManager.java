@@ -13,10 +13,9 @@ public interface PersonManager {
 	public List<Person> findDevicesByDate(Person person);
 	public int updateDevice(Person person, Person newPerson);
 	public int removeDevicesByName(Person person);
-
 	public void addDevices(List<Person> persons);
-	//public void updateDevices(List<Person> persons);
-	//public void deleteDevices(List<Person> persons);
+	public void updateDevices(List<Person> persons, List<Person> newPersons);
+	public int deleteDevices(List<Person> persons);
 	
 
 }

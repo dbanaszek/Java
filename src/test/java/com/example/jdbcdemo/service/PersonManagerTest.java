@@ -57,6 +57,7 @@ public class PersonManagerTest {
 	public void checkAdding() {
 
 		personManager.clearDevices();
+
 		assertEquals(1, personManager.addDevice(personOne));
 
 		List<Person> persons = personManager.getAllDevices();
@@ -73,6 +74,7 @@ public class PersonManagerTest {
 		int size;
 		
 		personManager.clearDevices();
+
 		List<Person> persons = new ArrayList<>();
 		persons.add(personOne);
 		persons.add(personTwo);
@@ -88,7 +90,10 @@ public class PersonManagerTest {
 	
 	@Test
 	public void checkFindByName(){
-		
+
+		personManager.clearDevices();
+		personManager.addDevice(personOne);
+
 		List<Person> persons = personManager.findDevicesByName(personOne);
 		Person personRetrieved = persons.get(0);
 
@@ -99,6 +104,9 @@ public class PersonManagerTest {
 
 	@Test
 	public void checkFindByScreenSize(){
+
+		personManager.clearDevices();
+		personManager.addDevice(personOne);
 
 		List<Person> persons = personManager.findDevicesByScreenSize(personThree);
 		Person personRetrieved = persons.get(0);
@@ -111,6 +119,9 @@ public class PersonManagerTest {
 	@Test
 	public void checkFindByDate(){
 
+		personManager.clearDevices();
+		personManager.addDevice(personOne);
+
 		List<Person> persons = personManager.findDevicesByDate(personOne);
 		Person personRetrieved = persons.get(0);
 
@@ -120,15 +131,19 @@ public class PersonManagerTest {
 	}
 
 	@Test
-	public void checkDeleting(){
+	public void checkDeleteDevice(){
+
+		personManager.clearDevices();
 
 		assertEquals(1, personManager.addDevice(personFour));
 		assertEquals(1, personManager.removeDevicesByName(personFour));
 	}
 
 	@Test
-	public void checkUpdating(){
-		
+	public void checkUpdateDevice(){
+
+		personManager.clearDevices();
+
 		assertEquals(1, personManager.addDevice(personFive));
 		assertEquals(1, personManager.updateDevice(personFive, personSix));
 
@@ -140,6 +155,57 @@ public class PersonManagerTest {
 		assertEquals(DATEOFRELEASE_6, personRetrieved.getDateOfRelease());
 
 		assertEquals(1, personManager.removeDevicesByName(personSix));
+	}
+
+	@Test
+	public void checkUpdateDevices(){
+
+		int size;
+
+		personManager.clearDevices();
+		List<Person> persons = new ArrayList<>();
+		List<Person> newPersons = new ArrayList<>();
+
+		persons.add(personOne);
+		persons.add(personTwo);
+		persons.add(personThree);
+
+		personManager.addDevices(persons);
+
+		newPersons.add(personFour);
+		newPersons.add(personFive);
+		newPersons.add(personSix);
+
+		personManager.updateDevices(persons, newPersons);
+
+		List<Person> personsRetrieved = personManager.getAllDevices();
+		size = personsRetrieved.size();
+
+		Person personRetrieved = personsRetrieved.get(0);
+
+		assertEquals(DEVICENAME_4, personRetrieved.getDeviceName());
+		assertEquals(SCREENSIZE_4, personRetrieved.getScreenSize(), 0.00001);
+		assertEquals(DATEOFRELEASE_4, personRetrieved.getDateOfRelease());
+		assertThat(size, either(is(3)).or(is(0)));
+	}
+
+	@Test
+	public void checkDeleteDevices(){
+
+		int size;
+
+		personManager.clearDevices();
+		List<Person> persons = new ArrayList<>();
+
+		persons.add(personOne);
+		persons.add(personTwo);
+		persons.add(personThree);
+
+		personManager.addDevices(persons);
+
+		size = personManager.deleteDevices(persons);
+
+		assertThat(size, either(is(3)).or(is(0)));
 	}
 
 }
