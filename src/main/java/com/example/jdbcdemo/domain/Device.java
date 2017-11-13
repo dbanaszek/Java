@@ -2,7 +2,7 @@ package com.example.jdbcdemo.domain;
 
 import java.util.Calendar;
 
-public class Person {
+public class Device {
 	
 	private long id;
 	
@@ -10,10 +10,10 @@ public class Person {
 	private double screenSize;
 	private Calendar dateOfRelease;
 	
-	public Person() {
+	public Device() {
 	}
 	
-	public Person(String deviceName, double screenSize, Calendar dateOfRelease) {
+	public Device(String deviceName, double screenSize, Calendar dateOfRelease) {
 		super();
 		this.deviceName = deviceName;
 		this.screenSize = screenSize;
