@@ -16,6 +16,7 @@ public class DeviceManagerTest {
 	
 	
 	DeviceManagerJDBC deviceManager = new DeviceManagerJDBC();
+	ConnectionManagerJDBC conn = new ConnectionManagerJDBC();
 	
 	private final static String DEVICENAME_1 = "Moto X gen.2";
 	private final static double SCREENSIZE_1 = 5.2;
@@ -50,7 +51,7 @@ public class DeviceManagerTest {
 	
 	@Test
 	public void checkConnection(){
-		assertNotNull(deviceManager.getConnection());
+		assertNotNull(conn.getConnection());
 	}
 	
 	@Test

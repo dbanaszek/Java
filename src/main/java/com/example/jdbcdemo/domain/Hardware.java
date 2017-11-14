@@ -1,22 +1,22 @@
 package com.example.jdbcdemo.domain;
 
-public class DeviceComponent {
+public class Hardware {
 
     private long id;
 
 
 
-    private String devicename;
+    private String deviceName;
     private int storage;
     private int memory;
     private String processor;
 
-    public DeviceComponent(){
+    public Hardware(){
 
     }
-    public DeviceComponent(String devicename, int storage, int memory, String processor){
+    public Hardware(String deviceName, int storage, int memory, String processor){
         super();
-        this.devicename = devicename;
+        this.deviceName = deviceName;
         this.storage = storage;
         this.memory = memory;
         this. processor = processor;
@@ -30,12 +30,12 @@ public class DeviceComponent {
     public void setId(long id) {
         this.id = id;
     }
-    public String getDevicename() {
-        return devicename;
+    public String getDeviceName() {
+        return deviceName;
     }
 
-    public void setDevicename(String devicename) {
-        this.devicename = devicename;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public int getStorage() {
