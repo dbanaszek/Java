@@ -165,6 +165,7 @@ public class DeviceManagerJDBC implements DeviceManager {
 
 	@Override
 	public void addDevices(List<Device> devices){
+
 		try {
 			connection.setAutoCommit(false);
 			for (Device device : devices) {
@@ -188,13 +189,13 @@ public class DeviceManagerJDBC implements DeviceManager {
 
 	@Override
 	public void updateDevices(List<Device> devices, List<Device> newDevices){
+
 		try{
 			int i = -1;
 
 			connection.setAutoCommit(false);
-			if(devices.size() != newDevices.size()){
+			if(devices.size() != newDevices.size())
 				throw new SQLException();
-			}
 
 			for(Device device : newDevices){
 				updateDeviceByNameStmt.setString(1, device.getDeviceName());
@@ -217,8 +218,8 @@ public class DeviceManagerJDBC implements DeviceManager {
 
 	@Override
 	public int deleteDevices(List<Device> devices){
-
 		int count = 0;
+
 		try{
 
 			connection.setAutoCommit(false);

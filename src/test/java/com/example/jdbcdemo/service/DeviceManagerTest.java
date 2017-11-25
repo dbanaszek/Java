@@ -16,19 +16,32 @@ public class DeviceManagerTest {
 	
 	
 	DeviceManagerJDBC deviceManager = new DeviceManagerJDBC();
+	HardwareManagerJDBC hardwareManager = new HardwareManagerJDBC();
 	ConnectionManagerJDBC conn = new ConnectionManagerJDBC();
 	
 	private final static String DEVICENAME_1 = "Moto X gen.2";
 	private final static double SCREENSIZE_1 = 5.2;
 	private final static Calendar DATEOFRELEASE_1 = new GregorianCalendar(2014, 9,5);
 
+	private final static int STORAGE_1 = 16;
+	private final static int MEMORY_1 = 2;
+	private final static String PROCESSOR_1 = "Snapdragon 801";
+
 	private final static String DEVICENAME_2 = "Galaxy S5";
 	private final static double SCREENSIZE_2 = 5.1;
 	private final static Calendar DATEOFRELEASE_2 = new GregorianCalendar(2014, 4,11);
 
+	private final static int STORAGE_2 = 16;
+	private final static int MEMORY_2 = 2;
+	private final static String PROCESSOR_2 = "Snapdragon 801";
+
 	private final static String DEVICENAME_3 =  "G2";
 	private final static double SCREENSIZE_3 = 5.2;
 	private final static Calendar DATEOFRELEASE_3 = new GregorianCalendar(2013, 9,13);
+
+	private final static int STORAGE_3 = 16;
+	private final static int MEMORY_3 = 2;
+	private final static String PROCESSOR_3 = "Snapdragon 800";
 
 	private final static String DEVICENAME_4 = "Iphone 7";
 	private final static double SCREENSIZE_4 = 4.7;
@@ -209,4 +222,18 @@ public class DeviceManagerTest {
 		assertThat(size, either(is(3)).or(is(0)));
 	}
 
+	@Test
+	public void checkDeleteDevicesForeignKey(){
+		deviceManager.clearDevices();
+		List<Device> devices = new ArrayList<>();
+
+		devices.add(deviceOne);
+		devices.add(deviceTwo);
+		devices.add(deviceThree);
+
+		deviceManager.addDevices(devices);
+
+
+
+	}
 }

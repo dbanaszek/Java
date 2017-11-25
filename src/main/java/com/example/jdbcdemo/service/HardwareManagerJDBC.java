@@ -66,7 +66,8 @@ public class HardwareManagerJDBC implements HardwareManager {
         return count;
     }
 
-    public List<Hardware> getAllHardware(){
+    @Override
+    public List<Hardware> getAllHardware() {
 
         List<Hardware> hardwares = new ArrayList<>();
 
@@ -79,6 +80,147 @@ public class HardwareManagerJDBC implements HardwareManager {
         }
 
         return hardwares;
+    }
+
+    @Override
+    public List<Hardware> findHardwareByDeviceName(Hardware hardware) {
+
+        List<Hardware> hardwares = new ArrayList<>();
+
+        try {
+            findHardwareByDeviceNameStmt.setString(1, hardware.getDeviceName());
+            hardwares = getFromResultSet(findHardwareByDeviceNameStmt.executeQuery());
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return  hardwares;
+    }
+
+    @Override
+    public List<Hardware> findHardwareByProcessor(Hardware hardware){
+
+        List<Hardware> hardwares = new ArrayList<>();
+
+        try {
+            findHardwareByProcessorStmt.setString(1, hardware.getProcessor());
+            hardwares = getFromResultSet(findHardwareByProcessorStmt.executeQuery());
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return hardwares;
+    }
+
+    @Override
+    public int updateHardware(Hardware hardware, Hardware newHardwares) {
+        int count = 0;
+
+        try {
+            updateHardwareStmt.setString(1, newHardwares.getDeviceName());
+            updateHardwareStmt.setInt(2, newHardwares.getStorage());
+            updateHardwareStmt.setInt(3, newHardwares.getMemory());
+            updateHardwareStmt.setString(4, newHardwares.getProcessor());
+            updateHardwareStmt.setString(5, hardware.getDeviceName());
+            count = updateHardwareStmt.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    @Override
+    public int removeHardwaresByName(Hardware hardware) {
+        int count = 0;
+
+        try {
+            deleteHardwareByDeviceNameStmt.setString(1, hardware.getDeviceName());
+            count = deleteAllHardwareStmt.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    @Override
+    public void addHardwares(List<Hardware> hardwares) {
+
+        try {
+            connection.setAutoCommit(false);
+            for(Hardware hardware : hardwares){
+                addHardwareStmt.setString(1, hardware.getDeviceName());
+                addHardwareStmt.setInt(2, hardware.getStorage());
+                addHardwareStmt.setInt(3, hardware.getMemory());
+                addHardwareStmt.setString(4, hardware.getProcessor());
+                addHardwareStmt.executeUpdate();
+            }
+            connection.commit();
+
+        }catch (SQLException exception){
+            try{
+                connection.rollback();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void updateHardwares(List<Hardware> hardwares, List<Hardware> newHardwares){
+
+        try{
+            int i = -1;
+
+            if(hardwares.size() != newHardwares.size())
+                throw new SQLException();
+
+            connection.setAutoCommit(false);
+            for(Hardware hardware : newHardwares){
+                updateHardwareStmt.setString(1, hardware.getDeviceName());
+                updateHardwareStmt.setInt(2, hardware.getStorage());
+                updateHardwareStmt.setInt(3, hardware.getMemory());
+                updateHardwareStmt.setString(4, hardware.getProcessor());
+                updateHardwareStmt.setString(5, hardwares.get(++i).getDeviceName());
+                updateHardwareStmt.executeUpdate();
+            }
+            connection.commit();
+
+        }catch (SQLException exception){
+            try {
+                connection.rollback();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public int deleteHardwares(List<Hardware> hardwares) {
+        int count = 0;
+
+        try {
+            connection.setAutoCommit(false);
+
+            for(Hardware hardware : hardwares){
+                deleteHardwareByDeviceNameStmt.setString(1, hardware.getDeviceName());
+                count += deleteHardwareByDeviceNameStmt.executeUpdate();
+            }
+            connection.commit();
+
+        }catch (SQLException exception){
+            try{
+                connection.rollback();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return count;
     }
 
     private List<Hardware> getFromResultSet (ResultSet rs){
