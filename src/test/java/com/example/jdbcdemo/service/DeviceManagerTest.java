@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.example.jdbcdemo.domain.Hardware;
 import org.junit.Test;
 
 import com.example.jdbcdemo.domain.Device;
@@ -47,13 +48,25 @@ public class DeviceManagerTest {
 	private final static double SCREENSIZE_4 = 4.7;
 	private final static Calendar DATEOFRELEASE_4 = new GregorianCalendar(2016, 9,7);
 
+	private final static int STORAGE_4 = 32;
+	private final static int MEMORY_4 = 2;
+	private final static String PROCESSOR_4 = "Apple A10";
+
 	private final static String DEVICENAME_5 = "G3";
 	private final static double SCREENSIZE_5 = 5.5;
 	private final static Calendar DATEOFRELEASE_5 = new GregorianCalendar(2014, 5,27);
 
+	private final static int STORAGE_5 = 32;
+	private final static int MEMORY_5 = 3;
+	private final static String PROCESSOR_5 = "Snapdragon 801";
+
 	private final static String DEVICENAME_6 = "G4";
 	private final static double SCREENSIZE_6 = 5.5;
 	private final static Calendar DATEOFRELEASE_6 = new GregorianCalendar(2015, 4,28);
+
+	private final static int STORAGE_6 = 32;
+	private final static int MEMORY_6 = 3;
+	private final static String PROCESSOR_6 = "Snapdragon 808";
 
 	Device deviceOne = new Device(DEVICENAME_1, SCREENSIZE_1, DATEOFRELEASE_1);
 	Device deviceTwo = new Device(DEVICENAME_2, SCREENSIZE_2, DATEOFRELEASE_2);
@@ -61,6 +74,13 @@ public class DeviceManagerTest {
 	Device deviceFour = new Device(DEVICENAME_4, SCREENSIZE_4, DATEOFRELEASE_4);
 	Device deviceFive = new Device(DEVICENAME_5, SCREENSIZE_5, DATEOFRELEASE_5);
 	Device deviceSix = new Device(DEVICENAME_6, SCREENSIZE_6, DATEOFRELEASE_6);
+
+	Hardware hardwareOne = new Hardware(DEVICENAME_1, STORAGE_1, MEMORY_1, PROCESSOR_1);
+	Hardware hardwareTwo = new Hardware(DEVICENAME_2, STORAGE_2, MEMORY_2, PROCESSOR_2);
+	Hardware hardwareThree = new Hardware(DEVICENAME_3, STORAGE_3, MEMORY_3, PROCESSOR_3);
+	Hardware hardwareFour = new Hardware(DEVICENAME_4, STORAGE_4, MEMORY_4, PROCESSOR_4);
+	Hardware hardwareFive = new Hardware(DEVICENAME_5, STORAGE_5, MEMORY_5, PROCESSOR_5);
+	Hardware hardwareSix = new Hardware(DEVICENAME_6, STORAGE_6, MEMORY_6, PROCESSOR_6);
 	
 	@Test
 	public void checkConnection(){
@@ -149,7 +169,7 @@ public class DeviceManagerTest {
 
 		deviceManager.clearDevices();
 
-		assertEquals(1, deviceManager.addDevice(deviceFour));
+		deviceManager.addDevice(deviceFour);
 		assertEquals(1, deviceManager.removeDevicesByName(deviceFour));
 	}
 
@@ -158,7 +178,7 @@ public class DeviceManagerTest {
 
 		deviceManager.clearDevices();
 
-		assertEquals(1, deviceManager.addDevice(deviceFive));
+		deviceManager.addDevice(deviceFive);
 		assertEquals(1, deviceManager.updateDevice(deviceFive, deviceSix));
 
 		List<Device> devices = deviceManager.findDevicesByDate(deviceSix);
@@ -167,8 +187,6 @@ public class DeviceManagerTest {
 		assertEquals(DEVICENAME_6, deviceRetrieved.getDeviceName());
 		assertEquals(SCREENSIZE_6, deviceRetrieved.getScreenSize(), 0.00001);
 		assertEquals(DATEOFRELEASE_6, deviceRetrieved.getDateOfRelease());
-
-		assertEquals(1, deviceManager.removeDevicesByName(deviceSix));
 	}
 
 	@Test
@@ -224,16 +242,34 @@ public class DeviceManagerTest {
 
 	@Test
 	public void checkDeleteDevicesForeignKey(){
+
+		int size;
+
 		deviceManager.clearDevices();
+		hardwareManager.clearHardware();
+
 		List<Device> devices = new ArrayList<>();
+		List<Hardware> hardwares = new ArrayList<>();
 
 		devices.add(deviceOne);
 		devices.add(deviceTwo);
 		devices.add(deviceThree);
 
+		hardwares.add(hardwareOne);
+		hardwares.add(hardwareTwo);
+		hardwares.add(hardwareThree);
+
 		deviceManager.addDevices(devices);
+		hardwareManager.addHardwares(hardwares);
 
+		size = deviceManager.deleteDevices(devices);
 
+		assertThat(size, either(is(3)).or(is(0)));
 
+		List<Hardware> hardwaresReceived = hardwareManager.getAllHardware();
+
+		size = hardwaresReceived.size();
+
+		assertEquals(0, size);
 	}
 }

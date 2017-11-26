@@ -30,8 +30,8 @@ public class HardwareManagerJDBC implements HardwareManager {
             addHardwareStmt = connection.prepareStatement("INSERT INTO Hardware(deviceName, storage, memory, processor) VALUES (?, ?, ?, ?)");
             deleteAllHardwareStmt = connection.prepareStatement("DELETE FROM Hardware");
             getAllHardwareStmt = connection.prepareStatement("SELECT id, deviceName, storage, memory, processor FROM Hardware");
-            findHardwareByDeviceNameStmt = connection.prepareStatement ("SELECT deviceName, storage, memory, processor FROM Hardware WHERE deviceName = ?");
-            findHardwareByProcessorStmt = connection.prepareStatement("SELECT deviceName, storage, memory, processor FROM Hardware WHERE processor = ?");
+            findHardwareByDeviceNameStmt = connection.prepareStatement ("SELECT id, deviceName, storage, memory, processor FROM Hardware WHERE deviceName = ?");
+            findHardwareByProcessorStmt = connection.prepareStatement("SELECT id, deviceName, storage, memory, processor FROM Hardware WHERE processor = ?");
             updateHardwareStmt = connection.prepareStatement("UPDATE Hardware SET deviceName = ?, storage = ?, memory = ?, processor = ? WHERE deviceName = ?");
             deleteHardwareByDeviceNameStmt = connection.prepareStatement("DELETE FROM Hardware WHERE deviceName = ?");
 
