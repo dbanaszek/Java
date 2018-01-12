@@ -4,3 +4,5 @@ Dawid Banaszek
 
 Dziedzina projektu: Smartphone
 
+Projekt JDBC
+
