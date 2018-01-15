@@ -4,7 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "exterior.all", query = "Select e from Exterior e")
+        @NamedQuery(name = "exterior.all", query = "Select e from Exterior e"),
+        @NamedQuery(name = "exterior.button", query = "Select e from Exterior e where e.physicalButtons = :physicalButtons"),
 })
 public class Exterior {
 

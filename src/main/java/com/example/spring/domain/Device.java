@@ -70,8 +70,8 @@ public class Device {
 		this.exterior = exterior;
 	}
 
-	@OneToMany(mappedBy = "device",
-			cascade = CascadeType.ALL)
+	@OneToMany(orphanRemoval=true, mappedBy = "device",
+			cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	public List<Hardware> getHardwares() {
 		return hardwares;
 	}

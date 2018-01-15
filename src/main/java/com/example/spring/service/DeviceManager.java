@@ -9,9 +9,7 @@ import com.example.spring.domain.Review;
 
 interface DeviceManager {
 
-
 	//Device table methods
-	void addDevice(Device device);
 	List<Device> getAllDevices();
 	List<Device> findDevicesByName(String name);
 	void addDevices(List<Device> devices);
@@ -23,6 +21,8 @@ interface DeviceManager {
 	void updateHardware(List<Hardware> oldHardware, List<Hardware> hardware);
 	void deleteHardware(List<Hardware> hardware);
 	List<Hardware> getAllHardware();
+	void addNewHardware(Hardware hardware, Long deviceId); //Adds new Hardware to Device
+
 
 	//Exterior table methods
 	void addExteriors(List<Exterior> exteriors);

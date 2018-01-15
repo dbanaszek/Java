@@ -82,12 +82,10 @@ public class DeviceManagerTest {
         exampleReviewOne.setTitle("Something");
         exampleReviewOne.setMaxScore(100);
         exampleReviewOne.setDeviceScore(95);
-        exampleReviewOne.setDevices(exampleDevices);
 
         exampleReviewOne.setTitle("SomethingTwo");
         exampleReviewOne.setMaxScore(50);
         exampleReviewOne.setDeviceScore(49);
-        exampleReviewOne.setDevices(exampleDevices);
 
         exampleReviews.add(exampleReviewOne);
         exampleReviews.add(exampleReviewTwo);
@@ -103,44 +101,18 @@ public class DeviceManagerTest {
         exampleDeviceTwo.setExterior(exampleExterior);
         exampleDeviceTwo.setHardwares(exampleHardwares);
         exampleDeviceTwo.setReviews(exampleReviews);
+
+        exampleDevices.add(exampleDeviceOne);
+        exampleDevices.add(exampleDeviceTwo);
     }
 
-
-    @Test
-    public void checkAdding() {
-
-        Device device = new Device();
-        device.setDeviceName(DEVICENAME_1);
-        //exampleDeviceOne.setScreenSize(SCREENSIZE_1);
-        device.setDateOfRelease(DATEOFRELEASE_1);
-
-        deviceManager.addReviews(exampleReviews);
-        deviceManager.addDevice(exampleDeviceOne);
-
-        List<Device> retrieved = deviceManager.getAllDevices();
-        assertEquals(DEVICENAME_1, retrieved.get(0).getDeviceName());
-    }
+    //Device tests
 
     @Test
     public void checkAddDevices(){
 
-        Device deviceOne = new Device();
-        deviceOne.setDeviceName(DEVICENAME_1);
-        //deviceOne.setScreenSize(SCREENSIZE_1);
-        deviceOne.setDateOfRelease(DATEOFRELEASE_1);
 
-        Device deviceTwo = new Device();
-        deviceTwo.setDeviceName(DEVICENAME_2);
-        //deviceTwo.setScreenSize(SCREENSIZE_2);
-        deviceTwo.setDateOfRelease(DATEOFRELEASE_2);
-
-        List<Device> devices = new ArrayList<Device>();
-
-        devices.add(deviceOne);
-        devices.add(deviceTwo);
-
-
-        deviceManager.addDevices(devices);
+        deviceManager.addDevices(exampleDevices);
 
         List<Device> retrieved = deviceManager.getAllDevices();
 
@@ -149,34 +121,29 @@ public class DeviceManagerTest {
     }
 
     @Test
+    public void checkFindByName(){
+        deviceManager.addDevices(exampleDevices);
+
+        List<Device> retrieved = deviceManager.findDevicesByName(DEVICENAME_1);
+
+        assertEquals(DEVICENAME_1, retrieved.get(0).getDeviceName());
+    }
+
+    @Test
     public void checkUpdateDevices(){
 
         Device deviceOne = new Device();
         deviceOne.setDeviceName(DEVICENAME_1);
-        //deviceOne.setScreenSize(SCREENSIZE_1);
         deviceOne.setDateOfRelease(DATEOFRELEASE_1);
-
-        Device deviceTwo = new Device();
-        deviceTwo.setDeviceName(DEVICENAME_2);
-        //deviceTwo.setScreenSize(SCREENSIZE_2);
-        deviceTwo.setDateOfRelease(DATEOFRELEASE_2);
-
-        Device deviceThree = new Device();
-        deviceThree.setDeviceName(DEVICENAME_3);
-        //deviceThree.setScreenSize(SCREENSIZE_3);
-        deviceThree.setDateOfRelease(DATEOFRELEASE_3);
 
         Device deviceFour = new Device();
         deviceFour.setDeviceName(DEVICENAME_4);
-        //deviceFour.setScreenSize(SCREENSIZE_4);
         deviceFour.setDateOfRelease(DATEOFRELEASE_4);
 
         List<Device> oldDevices = new ArrayList<Device>();
         oldDevices.add(deviceOne);
-        oldDevices.add(deviceTwo);
 
         List<Device> newDevices = new ArrayList<Device>();
-        newDevices.add(deviceThree);
         newDevices.add(deviceFour);
 
         deviceManager.addDevices(oldDevices);
@@ -184,52 +151,37 @@ public class DeviceManagerTest {
 
         List<Device> retrieved = deviceManager.getAllDevices();
 
-        assertEquals(DEVICENAME_3, retrieved.get(0).getDeviceName());
-        assertEquals(DEVICENAME_4, retrieved.get(1).getDeviceName());
+        assertEquals(DEVICENAME_4, retrieved.get(0).getDeviceName());
 
     }
 
     @Test
     public void checkDeleteDevices() {
 
-        Device deviceFour = new Device();
-        deviceFour.setDeviceName(DEVICENAME_4);
-        //deviceFour.setScreenSize(SCREENSIZE_4);
-        deviceFour.setDateOfRelease(DATEOFRELEASE_4);
-
-        Device deviceFive = new Device();
-        deviceFive.setDeviceName(DEVICENAME_5);
-        //deviceFive.setScreenSize(SCREENSIZE_5);
-        deviceFive.setDateOfRelease(DATEOFRELEASE_5);
-
-        Device deviceSix = new Device();
-        deviceSix.setDeviceName(DEVICENAME_6);
-        //deviceSix.setScreenSize(SCREENSIZE_6);
-        deviceSix.setDateOfRelease(DATEOFRELEASE_6);
-
-        List<Device> devices = new ArrayList<Device>();
-        devices.add(deviceFour);
-        devices.add(deviceFive);
-        devices.add(deviceSix);
-
-        deviceManager.addDevices(devices);
+        deviceManager.addDevices(exampleDevices);
+        deviceManager.deleteDevices(exampleDevices);
 
         List<Device> retrieved = deviceManager.getAllDevices();
 
-        assertEquals(3, retrieved.size());
-
-        deviceManager.deleteDevices(devices);
-
-        retrieved = deviceManager.getAllDevices();
-
         assertEquals(0, retrieved.size());
     }
+
+    //Hardware methods
+    @Test
+    public void checkAddHardware(){
+
+        deviceManager.addHardware(exampleHardwares);
+        List<Hardware> hardwares = deviceManager.getAllHardware();
+
+        assertEquals(hardwares.size(), 1);
+    }
+
 
     @Test
     public void checkUpdateHardware(){
 
         Hardware hardware = new Hardware();
-        Hardware received = new Hardware();
+        Hardware received;
         hardware.setProcessor("three");
         hardware.setStorage(32);
         hardware.setRam(8);
@@ -246,4 +198,132 @@ public class DeviceManagerTest {
 
         assertEquals(received.getProcessor(), "three");
     }
+
+    @Test
+    public void checkDeleteHardware(){
+        deviceManager.addHardware(exampleHardwares);
+        deviceManager.deleteHardware(exampleHardwares);
+
+        List<Hardware> retrieved = deviceManager.getAllHardware();
+
+        assertEquals(retrieved.size(), 0);
+    }
+
+    @Test
+    public void checkAddNewHardware(){
+        deviceManager.deleteDevices(exampleDevices);
+        deviceManager.addDevices(exampleDevices);
+        Hardware hardware = new Hardware();
+        hardware.setStorage(64);
+        hardware.setRam(2);
+        hardware.setProcessor("Snapdragon");
+
+        List<Device> receivedDevice = deviceManager.getAllDevices();
+        Long deviceId = receivedDevice.get(0).getId();
+
+        deviceManager.addNewHardware(hardware, deviceId);
+        List<Hardware> receivedHardware = deviceManager.getAllHardware();
+        assertEquals(receivedHardware.get(0).getDevice().getDeviceName(), receivedDevice.get(0).getDeviceName());
+    }
+
+    @Test
+    public void checkAddExteriors(){
+        Exterior exterior = new Exterior();
+        exterior.setScreenSize(5.2);
+        exterior.setPhysicalButtons(false);
+
+        List<Exterior> exteriors = new ArrayList<Exterior>();
+        exteriors.add(exterior);
+        deviceManager.addExteriors(exteriors);
+
+        List<Exterior> retrieved = deviceManager.getAllExterior();
+        assertEquals(retrieved.get(0).getScreenSize(), exterior.getScreenSize(),0.001);
+
+    }
+
+    @Test
+    public void checkUpdateExteriors(){
+        deviceManager.deleteDevices(exampleDevices);
+        Exterior exterior = new Exterior();
+        exterior.setScreenSize(5.2);
+        exterior.setPhysicalButtons(false);
+        exterior.setDevice(exampleDeviceOne);
+
+        Exterior newExterior = new Exterior();
+        exterior.setPhysicalButtons(true);
+        exterior.setScreenSize(6.0);
+
+        List<Exterior> oldExteriors = new ArrayList<Exterior>();
+        List<Exterior> newExteriors = new ArrayList<Exterior>();
+        List<Exterior> retrieved;
+        oldExteriors.add(exterior);
+        newExteriors.add(newExterior);
+
+        deviceManager.addExteriors(oldExteriors);
+        deviceManager.updateExteriors(oldExteriors, newExteriors);
+
+        retrieved = deviceManager.getAllExterior();
+
+        assertEquals(null, retrieved.get(0).getDevice());
+        assertEquals(newExterior.getScreenSize(), retrieved.get(0).getScreenSize(), 0.001);
+    }
+
+    @Test
+    public void checkDeleteExterior(){
+        Exterior exterior = new Exterior();
+        exterior.setScreenSize(5.2);
+        exterior.setPhysicalButtons(false);
+        exterior.setDevice(exampleDeviceOne);
+
+        List<Exterior> exteriors = new ArrayList<Exterior>();
+        exteriors.add(exterior);
+
+        deviceManager.addExteriors(exteriors);
+        deviceManager.deleteExteriors(exteriors);
+
+        List<Exterior> retrieved = new ArrayList<Exterior>();
+
+        assertEquals(0, retrieved.size());
+    }
+
+    @Test
+    public void checkAddReview(){
+        deviceManager.deleteReviews(deviceManager.getAllReviews());
+        exampleDeviceOne.setReviews(null);
+
+        List<Device> devices = new ArrayList<Device>();
+        devices.add(exampleDeviceOne);
+
+        exampleReviewOne.setDevices(devices);
+        List<Review> reviews = new ArrayList<Review>();
+        reviews.add(exampleReviewTwo);
+        reviews.add(exampleReviewOne);
+        deviceManager.addReviews(reviews);
+
+        List<Review> retrieved;
+        retrieved = deviceManager.getAllReviews();
+
+        assertEquals(exampleDeviceOne.getDeviceName(), retrieved.get(1).getDevices().get(0).getDeviceName());
+    }
+
+    @Test
+    public void checkUpdateReview(){
+        deviceManager.deleteReviews(deviceManager.getAllReviews());
+
+        List<Review> oldReview = new ArrayList<Review>();
+        List<Review> newReview = new ArrayList<Review>();
+        oldReview.add(exampleReviewOne);
+        newReview.add(exampleReviewTwo);
+
+        deviceManager.addReviews(oldReview);
+
+        deviceManager.updateReviews(oldReview, newReview);
+
+        Review retrieved = deviceManager.getAllReviews().get(0);
+
+        assertEquals(retrieved.getTitle(), exampleReviewTwo.getTitle());
+
+    }
+
+
 }

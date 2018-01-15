@@ -1,5 +1,7 @@
 package com.example.spring.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.example.spring.domain.Exterior;
@@ -30,12 +32,6 @@ public class DeviceManagerHibernate implements DeviceManager {
 	//Device methods
 
 	@Override
-	public void addDevice(Device device) {
-		device.setId(null);
-		sessionFactory.getCurrentSession().persist(device);
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
 	public List<Device> getAllDevices() {
 		return sessionFactory.getCurrentSession()
@@ -53,7 +49,6 @@ public class DeviceManagerHibernate implements DeviceManager {
 	public void addDevices(List<Device> devices) {
 
 		for(Device device : devices) {
-			device.setId(null);
 			sessionFactory.getCurrentSession().persist(device);
 		}
 		
@@ -65,7 +60,6 @@ public class DeviceManagerHibernate implements DeviceManager {
 		int i = 0;
 		for(Device device : devices) {
 			Device oldDevice = (Device) sessionFactory.getCurrentSession().get(Device.class, device.getId());
-			//oldDevice.setScreenSize(newDevices.get(i).getScreenSize());
 			oldDevice.setDeviceName(newDevices.get(i).getDeviceName());
 			oldDevice.setDateOfRelease(newDevices.get(i).getDateOfRelease());
 
@@ -109,7 +103,8 @@ public class DeviceManagerHibernate implements DeviceManager {
 
 	@Override
 	public void deleteHardware(List<Hardware> hardware) {
-		for(Hardware deleted : hardware) {
+
+		for (Hardware deleted : hardware){
 			sessionFactory.getCurrentSession().delete(deleted);
 		}
 	}
@@ -118,6 +113,13 @@ public class DeviceManagerHibernate implements DeviceManager {
 	@SuppressWarnings("unchecked")
 	public List<Hardware> getAllHardware(){
 		return sessionFactory.getCurrentSession().getNamedQuery("hardware.all").list();
+	}
+
+	@Override
+	public void addNewHardware(Hardware hardware, Long deviceId) {
+		Device device = (Device) sessionFactory.getCurrentSession().get(Device.class, deviceId);
+		hardware.setDevice(device);
+		sessionFactory.getCurrentSession().persist(hardware);
 	}
 
 	//Exterior methods
@@ -155,6 +157,7 @@ public class DeviceManagerHibernate implements DeviceManager {
 		return sessionFactory.getCurrentSession().getNamedQuery("exterior.all").list();
 	}
 
+
 	//Review methods
 	@Override
 	public void addReviews(List<Review> reviews){
@@ -180,7 +183,9 @@ public class DeviceManagerHibernate implements DeviceManager {
 
 	@Override
 	public void deleteReviews(List<Review> reviews) {
-
+		for(Review review : reviews) {
+			sessionFactory.getCurrentSession().delete(review);
+		}
 	}
 
 	@Override
@@ -188,6 +193,5 @@ public class DeviceManagerHibernate implements DeviceManager {
 	public List<Review> getAllReviews() {
 		return sessionFactory.getCurrentSession().getNamedQuery("review.all").list();
 	}
-
 
 }
