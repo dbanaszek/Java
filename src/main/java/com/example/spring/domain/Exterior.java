@@ -3,6 +3,9 @@ package com.example.spring.domain;
 import javax.persistence.*;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "exterior.all", query = "Select e from Exterior e")
+})
 public class Exterior {
 
     private Long id;
@@ -30,7 +33,7 @@ public class Exterior {
     }
 
     @Column(nullable = false)
-    public boolean isPhysicalButtons() {
+    public boolean getPhysicalButtons() {
         return physicalButtons;
     }
 

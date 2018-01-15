@@ -20,7 +20,7 @@ public class Device {
 	//private double screenSize;
 	private Calendar dateOfRelease;
 	private Exterior exterior;
-	private List<Component> components;
+	private List<Hardware> hardwares;
 	private List<Review> reviews;
 
 	@Id
@@ -72,15 +72,15 @@ public class Device {
 
 	@OneToMany(mappedBy = "device",
 			cascade = CascadeType.ALL)
-	public List<Component> getComponents() {
-		return components;
+	public List<Hardware> getHardwares() {
+		return hardwares;
 	}
 
-	public void setComponents(List<Component> components) {
-		this.components = components;
+	public void setHardwares(List<Hardware> hardwares) {
+		this.hardwares = hardwares;
 	}
 
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinTable(
 			name = "Device_Review",
 			joinColumns = {@JoinColumn(name = "devices_id")},

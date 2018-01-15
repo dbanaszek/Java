@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "review.all", query = "Select r from Review r")
+})
 public class Review {
 
     private Long id;
@@ -49,7 +52,8 @@ public class Review {
         this.deviceScore = deviceScore;
     }
 
-    @ManyToMany(mappedBy = "reviews")
+    @ManyToMany(mappedBy = "reviews",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     public List<Device> getDevices() {
         return devices;
     }

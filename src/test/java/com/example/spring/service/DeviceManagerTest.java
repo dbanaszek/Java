@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import com.example.spring.domain.Component;
+import com.example.spring.domain.Hardware;
 import com.example.spring.domain.Exterior;
 import com.example.spring.domain.Review;
 import org.junit.Test;
@@ -56,11 +56,11 @@ public class DeviceManagerTest {
     private Device exampleDeviceOne = new Device();
     private Device exampleDeviceTwo = new Device();
     private Exterior exampleExterior = new Exterior();
-    private Component exampleComponent = new Component();
+    private Hardware exampleHardware = new Hardware();
     private Review exampleReviewOne = new Review();
     private Review exampleReviewTwo = new Review();
 
-    List<Component> exampleComponents = new ArrayList<Component>();
+    List<Hardware> exampleHardwares = new ArrayList<Hardware>();
     List<Review> exampleReviews = new ArrayList<Review>();
     List<Device> exampleDevices = new ArrayList<Device>();
 
@@ -69,12 +69,12 @@ public class DeviceManagerTest {
         exampleExterior.setPhysicalButtons(false);
         exampleExterior.setDevice(exampleDeviceOne);
 
-        exampleComponent.setProcessor("Something");
-        exampleComponent.setStorage(64);
-        exampleComponent.setRam(2);
-        exampleComponent.setDevice(exampleDeviceOne);
+        exampleHardware.setProcessor("Something");
+        exampleHardware.setStorage(64);
+        exampleHardware.setRam(2);
+        exampleHardware.setDevice(exampleDeviceOne);
 
-        exampleComponents.add(exampleComponent);
+        exampleHardwares.add(exampleHardware);
 
         exampleDevices.add(exampleDeviceOne);
         exampleDevices.add(exampleDeviceTwo);
@@ -95,13 +95,13 @@ public class DeviceManagerTest {
         exampleDeviceOne.setDeviceName(DEVICENAME_1);
         exampleDeviceOne.setDateOfRelease(DATEOFRELEASE_1);
         exampleDeviceOne.setExterior(exampleExterior);
-        exampleDeviceOne.setComponents(exampleComponents);
+        exampleDeviceOne.setHardwares(exampleHardwares);
         exampleDeviceOne.setReviews(exampleReviews);
 
         exampleDeviceTwo.setDeviceName(DEVICENAME_2);
         exampleDeviceTwo.setDateOfRelease(DATEOFRELEASE_2);
         exampleDeviceTwo.setExterior(exampleExterior);
-        exampleDeviceTwo.setComponents(exampleComponents);
+        exampleDeviceTwo.setHardwares(exampleHardwares);
         exampleDeviceTwo.setReviews(exampleReviews);
     }
 
@@ -119,42 +119,6 @@ public class DeviceManagerTest {
 
         List<Device> retrieved = deviceManager.getAllDevices();
         assertEquals(DEVICENAME_1, retrieved.get(0).getDeviceName());
-    }
-
-    /*@Test
-    public void checkFindByScreen(){
-
-        Device deviceFour = new Device();
-        deviceFour.setDeviceName(DEVICENAME_4);
-        deviceFour.setScreenSize(SCREENSIZE_4);
-        deviceFour.setDateOfRelease(DATEOFRELEASE_4);
-
-        deviceManager.addDevice(deviceFour);
-
-        List<Device> exampleDeviceOne = deviceManager.findDevicesByScreenSize(SCREENSIZE_4);
-
-        assertEquals(DEVICENAME_4, exampleDeviceOne.get(0).getDeviceName());
-        assertEquals(DATEOFRELEASE_4, exampleDeviceOne.get(0).getDateOfRelease());
-    } */
-
-    @Test
-    public void checkUpdate() {
-
-        Device oldDevice = new Device();
-        oldDevice.setDeviceName(DEVICENAME_2);
-        //oldDevice.setScreenSize(SCREENSIZE_2);
-        oldDevice.setDateOfRelease(DATEOFRELEASE_2);
-
-        Device newDevice = new Device();
-        newDevice.setDeviceName(DEVICENAME_3);
-        //newDevice.setScreenSize(SCREENSIZE_3);
-        newDevice.setDateOfRelease(DATEOFRELEASE_3);
-
-        deviceManager.addDevice(oldDevice);
-
-        List<Device> retrieved = deviceManager.findDevicesByName(DEVICENAME_2);
-
-        deviceManager.updateDevice(retrieved.get(0).getId(), newDevice);
     }
 
     @Test
@@ -259,5 +223,27 @@ public class DeviceManagerTest {
         retrieved = deviceManager.getAllDevices();
 
         assertEquals(0, retrieved.size());
+    }
+
+    @Test
+    public void checkUpdateHardware(){
+
+        Hardware hardware = new Hardware();
+        Hardware received = new Hardware();
+        hardware.setProcessor("three");
+        hardware.setStorage(32);
+        hardware.setRam(8);
+
+        List<Hardware> oldHardware = new ArrayList<Hardware>();
+        List<Hardware> newHardware = new ArrayList<Hardware>();
+
+        oldHardware.add(exampleHardware);
+        newHardware.add(hardware);
+
+        deviceManager.addHardware(oldHardware);
+        deviceManager.updateHardware(oldHardware, newHardware);
+        received = deviceManager.getAllHardware().get(0);
+
+        assertEquals(received.getProcessor(), "three");
     }
 }

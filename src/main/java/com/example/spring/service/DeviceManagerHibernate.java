@@ -2,6 +2,8 @@ package com.example.spring.service;
 
 import java.util.List;
 
+import com.example.spring.domain.Exterior;
+import com.example.spring.domain.Hardware;
 import com.example.spring.domain.Review;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,9 @@ public class DeviceManagerHibernate implements DeviceManager {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
+	//Device methods
+
 	@Override
 	public void addDevice(Device device) {
 		device.setId(null);
@@ -43,24 +47,6 @@ public class DeviceManagerHibernate implements DeviceManager {
 	public List<Device> findDevicesByName(String name) {
 		return sessionFactory.getCurrentSession()
 				.getNamedQuery("device.byName").setString("name", name).list();
-	}
-
-	/*@Override
-	@SuppressWarnings("unchecked")
-	public List<Device> findDevicesByScreenSize(double screenSize) {
-		return sessionFactory.getCurrentSession()
-				.getNamedQuery("device.byScreen").setDouble("screenSize", screenSize).list();
-	}*/
-
-	@Override
-	public void updateDevice(Long deviceId, Device newDevice) {
-		Device device = (Device) sessionFactory.getCurrentSession().get(
-				Device.class, deviceId);
-		device.setDateOfRelease(newDevice.getDateOfRelease());
-		device.setDeviceName(newDevice.getDeviceName());
-		//device.setScreenSize(newDevice.getScreenSize());
-
-		sessionFactory.getCurrentSession().update(device);
 	}
 
 	@Override
@@ -97,6 +83,79 @@ public class DeviceManagerHibernate implements DeviceManager {
 		}
 	}
 
+	//Hardware methods
+
+	@Override
+	public void addHardware(List<Hardware> hardware) {
+		for(Hardware parts : hardware) {
+			parts.setId(null);
+			sessionFactory.getCurrentSession().persist(parts);
+		}
+	}
+
+	@Override
+	public void updateHardware(List<Hardware> oldHardware ,List<Hardware> newHardware) {
+		
+		int i = 0;
+		for(Hardware hardware : oldHardware) {
+			hardware.setProcessor(newHardware.get(i).getProcessor());
+			hardware.setRam(newHardware.get(i).getRam());
+			hardware.setStorage(newHardware.get(i).getStorage());
+			hardware.setDevice(newHardware.get(i).getDevice());
+			sessionFactory.getCurrentSession().update(hardware);
+			i++;
+		}
+	}
+
+	@Override
+	public void deleteHardware(List<Hardware> hardware) {
+		for(Hardware deleted : hardware) {
+			sessionFactory.getCurrentSession().delete(deleted);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Hardware> getAllHardware(){
+		return sessionFactory.getCurrentSession().getNamedQuery("hardware.all").list();
+	}
+
+	//Exterior methods
+	@Override
+	public void addExteriors(List<Exterior> exteriors) {
+		for(Exterior exterior : exteriors) {
+			exterior.setId(null);
+			sessionFactory.getCurrentSession().persist(exterior);
+		}
+	}
+
+	@Override
+	public void updateExteriors(List<Exterior> oldExteriors, List<Exterior> newExteriors) {
+
+		int i = 0;
+		for(Exterior exterior : oldExteriors) {
+			exterior.setDevice(newExteriors.get(i).getDevice());
+			exterior.setPhysicalButtons(newExteriors.get(i).getPhysicalButtons());
+			exterior.setScreenSize(newExteriors.get(i).getScreenSize());
+			sessionFactory.getCurrentSession().update(exterior);
+			i++;
+		}
+	}
+
+	@Override
+	public void deleteExteriors(List<Exterior> exteriors) {
+		for(Exterior exterior : exteriors) {
+			sessionFactory.getCurrentSession().delete(exterior);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Exterior> getAllExterior() {
+		return sessionFactory.getCurrentSession().getNamedQuery("exterior.all").list();
+	}
+
+	//Review methods
 	@Override
 	public void addReviews(List<Review> reviews){
 		for(Review review : reviews) {
@@ -105,6 +164,30 @@ public class DeviceManagerHibernate implements DeviceManager {
 		}
 	}
 
-	
+	@Override
+	public void updateReviews(List<Review> oldReviews, List<Review> newReviews) {
+
+		int i = 0;
+		for(Review review : oldReviews) {
+			review.setDevices(newReviews.get(i).getDevices());
+			review.setDeviceScore(newReviews.get(i).getDeviceScore());
+			review.setMaxScore(newReviews.get(i).getMaxScore());
+			review.setTitle(newReviews.get(i).getTitle());
+			sessionFactory.getCurrentSession().update(review);
+			i++;
+		}
+	}
+
+	@Override
+	public void deleteReviews(List<Review> reviews) {
+
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Review> getAllReviews() {
+		return sessionFactory.getCurrentSession().getNamedQuery("review.all").list();
+	}
+
 
 }

@@ -3,7 +3,10 @@ package com.example.spring.domain;
 import javax.persistence.*;
 
 @Entity
-public class Component {
+@NamedQueries({
+        @NamedQuery(name = "hardware.all", query = "Select h from Hardware h")
+})
+public class Hardware {
 
     private Long id;
     private String processor;
