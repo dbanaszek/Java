@@ -325,5 +325,21 @@ public class DeviceManagerTest {
 
     }
 
+    @Test
+    public void checkDeviceReview(){
+        deviceManager.deleteReviews(deviceManager.getAllReviews());
+        deviceManager.deleteDevices(deviceManager.getAllDevices());
+        List<Device> devices = new ArrayList<Device>();
+        exampleDeviceOne.setReviews(null);
+        devices.add(exampleDeviceOne);
+        deviceManager.addDevices(devices);
+
+        deviceManager.addReviewToDevice(exampleReviewOne, exampleDeviceOne.getId());
+
+        List<Device> retrieved = deviceManager.getAllDevices();
+
+        assertEquals(exampleDeviceOne.getReviews().get(0).getTitle(), retrieved.get(0).getReviews().get(0).getTitle());
+    }
+
 
 }

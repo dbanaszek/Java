@@ -1,7 +1,6 @@
 package com.example.spring.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.example.spring.domain.Exterior;
@@ -192,6 +191,28 @@ public class DeviceManagerHibernate implements DeviceManager {
 	@SuppressWarnings("unchecked")
 	public List<Review> getAllReviews() {
 		return sessionFactory.getCurrentSession().getNamedQuery("review.all").list();
+	}
+
+	@Override
+	public void addReviewToDevice(Review review, Long deviceId) {
+		Device device = (Device) sessionFactory.getCurrentSession().get(Device.class, deviceId);
+		List<Review> reviews = new ArrayList<Review>();
+		List<Device> devices = new ArrayList<Device>();
+
+		try{
+			review.getDevices().add(device);
+		}catch (Exception e){
+			devices.add(device);
+		}
+
+		try{
+			device.getReviews().add(review);
+		}catch (Exception e) {
+			reviews.add(review);
+			device.setReviews(reviews);
+		}
+		sessionFactory.getCurrentSession().persist(review);
+		sessionFactory.getCurrentSession().update(device);
 	}
 
 }

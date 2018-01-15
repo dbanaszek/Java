@@ -35,4 +35,5 @@ interface DeviceManager {
 	void updateReviews(List<Review> oldReviews, List<Review> newReviews);
 	void deleteReviews(List<Review> reviews);
 	List<Review> getAllReviews();
+	void addReviewToDevice(Review review, Long deviceId);
 }
